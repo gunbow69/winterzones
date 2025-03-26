@@ -1,4 +1,3 @@
-
 import fallback from '../data/fallback-data.json' assert { type: 'json' };
 
 export default async function handler(req, res) {
@@ -27,7 +26,10 @@ export default async function handler(req, res) {
       throw new Error("Keine Wetterdaten vom API erhalten.");
     }
   } catch (error) {
-    const closest = fallback.find(e => Math.abs(e.lat - lat) < 0.5 && Math.abs(e.lon - lon) < 0.5);
+    const fallbackLat = parseFloat(lat);
+    const fallbackLon = parseFloat(lon);
+
+    const closest = fallback.find(e => Math.abs(e.lat - fallbackLat) < 0.5 && Math.abs(e.lon - fallbackLon) < 0.5);
     if (closest) {
       const fallbackData = closest.tmin.map((t, i) => ({
         date: (2014 + i) + "-01-01",
